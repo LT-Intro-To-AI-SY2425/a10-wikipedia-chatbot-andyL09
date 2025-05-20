@@ -151,6 +151,18 @@ def everything(matches: List[str]) -> List[str]:
 def bye_action(dummy: List[str]) -> None:
     raise KeyboardInterrupt
 
+#Coordinates([\dNEWS\.\/\s\-;]+)
+def get_coordinates(place: str) -> str:
+    infobox_text = clean_text(get_first_infobox_text(get_page_html(place)))
+    pattern = r"Coordinates(?P<coord>[\dNEWS\.\/\s\-;]+)"
+    error_text = (
+        "No coordinate information found in correct format"
+    )
+    match = get_match(infobox_text, pattern, error_text)
+
+    return match.group("coord")
+def coordinates(matches: List[str]) -> List[str]:
+    return [get_coordinates(matches[0])]
 
 # type aliases to make pa_list type more readable, could also have written:
 # pa_list: List[Tuple[List[str], Callable[[List[str]], List[Any]]]] = [...]
@@ -163,6 +175,7 @@ pa_list: List[Tuple[Pattern, Action]] = [
     ("when was % born".split(), birth_date),
     ("what is the polar radius of %".split(), polar_radius),
     ("tell me everything about %".split(), everything),
+    ("what are the coordinates of %".split(), coordinates),
     (["bye"], bye_action),
 ]
 
