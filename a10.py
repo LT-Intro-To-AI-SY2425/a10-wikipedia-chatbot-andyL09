@@ -8,6 +8,8 @@ from match import match
 from typing import List, Callable, Tuple, Any, Match
 
 
+# GROUP: ANDY AND TREVOR
+
 def get_page_html(title: str) -> str:
     """Gets html of a wikipedia page
 
@@ -164,6 +166,30 @@ def get_coordinates(place: str) -> str:
 def coordinates(matches: List[str]) -> List[str]:
     return [get_coordinates(matches[0])]
 
+def get_website(org: str) -> str:
+    infobox_text = clean_text(get_first_infobox_text(get_page_html(org)))
+    pattern = r"Website(?P<site>www\.[\w\d]+.[\w]{3})"
+    error_text = (
+        "No website information found in correct format"
+    )
+    match = get_match(infobox_text, pattern, error_text)
+
+    return match.group("site")
+def website(matches: List[str]) -> List[str]:
+    return [get_website(matches[0])]
+
+
+def get_gdp(org: str) -> str:
+    infobox_text = clean_text(get_first_infobox_text(get_page_html(org)))
+    pattern = r"(?P<gdp>GDP.*)Gini"
+    error_text = (
+        "No GDP information found in correct format"
+    )
+    match = get_match(infobox_text, pattern, error_text)
+
+    return match.group("gdp")
+def gdp(matches: List[str]) -> List[str]:
+    return [get_gdp(matches[0])]
 # type aliases to make pa_list type more readable, could also have written:
 # pa_list: List[Tuple[List[str], Callable[[List[str]], List[Any]]]] = [...]
 Pattern = List[str]
@@ -176,6 +202,8 @@ pa_list: List[Tuple[Pattern, Action]] = [
     ("what is the polar radius of %".split(), polar_radius),
     ("tell me everything about %".split(), everything),
     ("what are the coordinates of %".split(), coordinates),
+    ("what is the website for %".split(), website),
+    ("what is the gdp of %".split(), gdp),
     (["bye"], bye_action),
 ]
 
