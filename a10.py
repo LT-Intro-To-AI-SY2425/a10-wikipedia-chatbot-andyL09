@@ -141,7 +141,13 @@ def polar_radius(matches: List[str]) -> List[str]:
     return [get_polar_radius(matches[0])]
 
 
-# dummy argument is ignored and doesn't matter
+
+"NEW STUFF"
+def get_everything(thing: str) -> str:
+    infobox_text = clean_text(get_first_infobox_text(get_page_html(thing)))
+    return infobox_text
+def everything(matches: List[str]) -> List[str]:
+    return [get_everything(matches[0])]# dummy argument is ignored and doesn't matter
 def bye_action(dummy: List[str]) -> None:
     raise KeyboardInterrupt
 
@@ -156,6 +162,7 @@ Action = Callable[[List[str]], List[Any]]
 pa_list: List[Tuple[Pattern, Action]] = [
     ("when was % born".split(), birth_date),
     ("what is the polar radius of %".split(), polar_radius),
+    ("tell me everything about %".split(), everything),
     (["bye"], bye_action),
 ]
 
@@ -184,7 +191,7 @@ def search_pa_list(src: List[str]) -> List[str]:
 def query_loop() -> None:
     """The simple query loop. The try/except structure is to catch Ctrl-C or Ctrl-D
     characters and exit gracefully"""
-    print("Welcome to the movie database!\n")
+    print("Welcome to the wikipedia database!\n")
     while True:
         try:
             print()
