@@ -168,7 +168,7 @@ def coordinates(matches: List[str]) -> List[str]:
 
 def get_website(org: str) -> str:
     infobox_text = clean_text(get_first_infobox_text(get_page_html(org)))
-    pattern = r"Website(?P<site>www\.[\w\d]+.[\w]{3})"
+    pattern = r"Website(?P<site>(www\.)?[\w\d]+.[\w]{3})"
     error_text = (
         "No website information found in correct format"
     )
